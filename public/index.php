@@ -13,12 +13,26 @@
     
     </header>
 
-    <h1>Welkom op mijn Gebakpagina</h1>
+
 
 <!-- Inclusief het gebak.php bestand om de gegevens weer te geven -->
 <?php 
-    require('./gebak.php');
+
+
+// handle incomming request
+// controleer de url, is er misschien een categorie geselecteerd?
+// $url = explode('/', trim($_SERVER['REQUEST_URI']));
+// // remove empty values 
+// $url = array_values(array_filter($url));
+// // and set a default
+// if (empty($url[0])) {
+//     $url[] = 'home';
+// }
+// var_dump($url);
+    require('../views/home.php');
     require('./producten.php');
+    // require('./gebak.php');
+    
 ?>
     
 </body>
