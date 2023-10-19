@@ -1,47 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/style.css">
-    <title>Productdetails</title>
-</head>
-<body>
+<style>
+<?php include '../public/css/style.css'; ?>
+</style>
+
 <?php
-require('../database.php');
 
-// Haal de URL op
-$request_uri = $_SERVER['REQUEST_URI'];
-// Splits de URL in delen op basis van /
-$parts = explode('/', $request_uri);
-// Verwijder lege delen
-$parts = array_values(array_filter($parts));
+//handle inkomende aanvraag
+//controleer de URL, is er misschien een categorie geselecteerd?
+$url = explode('/', trim($_SERVER['REQUEST_URI']));
+// verwijder lege waarden
+$url = array_values(array_filter($url));
+// en stel een standaardwaarde in
+if (empty($url[0])) {
+    $url[] = 'home';
+}
 
-if (count($parts) > 1) {
-    // De URL bevat een slug, bijv. "detail.php/appeltaart"
-    $slug = $parts[1];
-    $sql = "SELECT id, title, intro, `desc` FROM product WHERE slug = ?";
-    $stmt = $con->prepare($sql);
-    $stmt->bind_param("s", $slug);
-    $stmt->execute();
-    $result = $stmt->get_result();
+var_dump($url);
+
+// Open de <main> tag hier
+echo '<main class="main__detail">';
+
+if (isset($_GET['slug'])) {
+    $slug = $_GET['slug'];
+    require('../database.php');
+
+    $sql = "SELECT id, title, intro, `desc`, image FROM product WHERE slug = '$slug'";
+    $result = $con->query($sql);
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
+        echo '<a class="home__button" href="home">Terug naar Home</a>'; // Terugknop
+
         echo '<h1>' . $row['title'] . '</h1>';
-        echo '<p>' . $row['intro'] . '</p>';
-        echo '<p>' . $row['desc'] . '</p>';
+
+        // De 'image' kolom bevat BLOB-gegevens, converteer deze naar een afbeelding
+        $imageData = $row['image'];
+        $imageBase64 = base64_encode($imageData);
+        $imageMimeType = 'image/jpeg'; // Pas dit aan naar het juiste MIME-type
+        
+        echo '<img class="product-image-new" src="data:' . $imageMimeType . ';base64,' . $imageBase64 . '" alt="' . $row['title'] . '">';
+        
+        echo '<p class="custom-intro">' . $row['intro'] . '</p>'; // Geef een andere klasse "custom-intro"
+        echo '<p class="custom-desc">' . $row['desc'] . '</p>'; // Geef een andere klasse "custom-desc"
+        // Voeg hier andere details toe die je wilt weergeven
     } else {
-        echo "Product niet gevonden.";
+        echo "Product niet gevonden";
     }
-    $stmt->close();
+
+    $con->close();
 } else {
-    echo "Ongeldige productpagina.";
+    echo "Ongeldige URL voor detailpagina";
 }
 
-$con->close();
+// Sluit de <main> tag hier
+echo '</main>'; 
 ?>
-
-
-</body>
-</html>
