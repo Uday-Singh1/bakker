@@ -1,13 +1,11 @@
 <h1>Onze Producten</h1>
 
-
 <style>
 <?php include '../public/css/style.css'; ?>
 </style>
 
 <div class="product-container">
     <?php
-
 
 //handle inkomende aanvraag
 //controleer de URL, is er misschien een categorie geselecteerd?
@@ -27,8 +25,8 @@ if (empty($url[0])) {
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             echo '<div class="product-card">';
-            // echo '<a href="details?slug=' . $row['slug'] . '">';
-
+            /* echo '<a href="details?slug=' . $row['slug'] . '">'; */
+                
             echo '<a href="detail.php?slug=' . $row['slug'] . '">';
 
             $imageData = $row['image'];
@@ -49,4 +47,3 @@ if (empty($url[0])) {
     $con->close();
     ?>
 </div>
-
