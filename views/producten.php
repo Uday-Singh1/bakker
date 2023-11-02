@@ -1,5 +1,5 @@
 <h1>Onze Producten</h1>
-
+<link rel="stylesheet" href="../public/css/style.css">
 <style>
 <?php include '../public/css/style.css'; ?>
 </style>
@@ -27,7 +27,7 @@ if (empty($url[0])) {
             echo '<div class="product-card">';
             /* echo '<a href="details?slug=' . $row['slug'] . '">'; */
                 
-            echo '<a href="detail.php?slug=' . $row['slug'] . '">';
+            echo '<a href="/detail/' . $row['slug'] . '">';
 
             $imageData = $row['image'];
             $imageBase64 = base64_encode($imageData);

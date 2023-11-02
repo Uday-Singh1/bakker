@@ -8,6 +8,8 @@
 </head>
 <body>
     <h1>Welkom op mijn Gebakpagina</h1>
-
+    <?php 
+    require('../views/producten.php'); 
+    ?>
 </body>
 </html>

@@ -1,19 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+<?php
+//handle inkomende aanvraag
+//controleer de URL, is er misschien een categorie geselecteerd?
+$url = explode('/', trim($_SERVER['REQUEST_URI']));
+// verwijder lege waarden
+$url = array_values(array_filter($url));
+// en stel een standaardwaarde in
+if (empty($url[0])) {
+    $url[] = 'home';
+}
 
-    <?php
-    require('./interface.php');
-    
-    ?>
+// //handle inkomende aanvraag
+// //controleer de URL, is er misschien een categorie geselecteerd?
+// $url = explode('/', trim($_SERVER['REQUEST_URI']));
+// // verwijder lege waarden
+// $url = array_values(array_filter($url));
+// // en stel een standaardwaarde in
+// if (empty($url[0])) {
+//     $url[] = 'detail';
+// }
 
-</body>
-</html>
+var_dump($url);
 
 
+// Hier kun je de URL aanpassen naar 'details/appeltaart'
+if ($url[0] === 'detail' && !empty($url[1])) {
+    define('SLUG',$url[1]);
+    require('./detail.php');
+} else {
+    require('../views/home.php');
+}
+
+
+
+
+
+
+
+// Toon de inhoud van de pagina's waar je dat wilt
+// echo $homeContent;
+// echo $productenContent;
 
